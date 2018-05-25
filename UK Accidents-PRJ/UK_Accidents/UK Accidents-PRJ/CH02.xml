@@ -2974,7 +2974,6 @@
           <ElemNo>
             <int>6</int>
             <int>9</int>
-            <int>10</int>
             <int>13</int>
             <int>14</int>
           </ElemNo>
@@ -2984,9 +2983,6 @@
             </Blob>
             <Blob>
                 BFJpZGRlbiBob3JzZQA=
-            </Blob>
-            <Blob>
-                BEFncmljdWx0dXJhbCB2ZWhpY2xlAA==
             </Blob>
             <Blob>
                 BEdvb2RzIG92ZXIgMy41dC4gYW5kIHVuZGVyIDcuNXQA
