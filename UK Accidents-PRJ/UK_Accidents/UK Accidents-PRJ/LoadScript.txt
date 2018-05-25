@@ -1,0 +1,186 @@
+﻿///$tab Main
+SET ThousandSep=' ';
+SET DecimalSep=',';
+SET MoneyThousandSep='.';
+SET MoneyDecimalSep=',';
+SET MoneyFormat='#.##0,00 kr;-#.##0,00 kr';
+SET TimeFormat='hh:mm:ss';
+SET DateFormat='YYYY-MM-DD';
+SET TimestampFormat='YYYY-MM-DD hh:mm:ss[.fff]';
+SET MonthNames='jan;feb;mar;apr;maj;jun;jul;aug;sep;okt;nov;dec';
+SET DayNames='må;ti;on;to;fr;lö;sö';
+SET LongMonthNames='januari;februari;mars;april;maj;juni;juli;augusti;september;oktober;november;december';
+SET LongDayNames='måndag;tisdag;onsdag;torsdag;fredag;lördag;söndag';
+SET FirstWeekDay=0;
+SET BrokenWeeks=0;
+SET ReferenceDay=4;
+SET FirstMonthOfYear=1;
+SET CollationLocale='sv-SE';
+
+///$tab Accidents
+Accidents:
+LOAD Accident_Index, 
+     Location_Easting_OSGR, 
+     Location_Northing_OSGR, 
+     Longitude, 
+     Latitude, 
+     //Police_Force, 
+     Accident_Severity, 
+     Number_of_Vehicles, 
+     Number_of_Casualties, 
+     Date, 
+     Day_of_Week, 
+     Time, 
+     //[Local_Authority_(District)], 
+     //[Local_Authority_(Highway)], 
+//     [1st_Road_Class], 
+//     [1st_Road_Number], 
+     Road_Type, 
+     Speed_limit 
+//     Junction_Detail, 
+//     Junction_Control, 
+//     [2nd_Road_Class], 
+//     [2nd_Road_Number], 
+//     [Pedestrian_Crossing-Human_Control], 
+//     [Pedestrian_Crossing-Physical_Facilities], 
+//     Light_Conditions, 
+//     Weather_Conditions, 
+//     Road_Surface_Conditions, 
+//     Special_Conditions_at_Site, 
+//     Carriageway_Hazards, 
+//     Urban_or_Rural_Area, 
+//     Did_Police_Officer_Attend_Scene_of_Accident, 
+//     LSOA_of_Accident_Location
+FROM
+[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Accidents0514.csv]
+(txt, utf8, embedded labels, delimiter is ',', msq);
+
+Left Join
+LOAD code AS Accident_Severity, 
+     label AS [Accident Severity]
+FROM
+[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Road-Accident-Safety-Data-Guide.xls]
+(biff, embedded labels, table is [Accident Severity$]);
+
+Left Join
+LOAD code as Road_Type, 
+     label AS [Road Type]
+FROM
+[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Road-Accident-Safety-Data-Guide.xls]
+(biff, embedded labels, table is [Road Type$]);
+
+///$tab Vehicles
+Vehicles:
+LOAD
+	Accident_Index AND '_' AND Vehicle_Reference AS %Key_AccidentVehicle, 
+	Accident_Index, 
+     Vehicle_Reference, 
+     Vehicle_Type, 
+//     Towing_and_Articulation, 
+//     Vehicle_Manoeuvre, 
+//     [Vehicle_Location-Restricted_Lane], 
+//     Junction_Location, 
+//     Skidding_and_Overturning, 
+//     Hit_Object_in_Carriageway, 
+//     Vehicle_Leaving_Carriageway, 
+//     Hit_Object_off_Carriageway, 
+//     [1st_Point_of_Impact], 
+//     Was_Vehicle_Left_Hand_Drive?, 
+     Journey_Purpose_of_Driver, 
+     Sex_of_Driver, 
+     Age_of_Driver 
+//     Age_Band_of_Driver, 
+//     [Engine_Capacity_(CC)], 
+//     Propulsion_Code, 
+//     Age_of_Vehicle, 
+//     Driver_IMD_Decile, 
+//     Driver_Home_Area_Type
+FROM
+[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Vehicles0514.csv]
+(txt, utf8, embedded labels, delimiter is ',', msq);
+
+
+
+Left Join
+LOAD code AS Vehicle_Type, 
+     label AS [Vehicle Type]
+FROM
+[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Road-Accident-Safety-Data-Guide.xls]
+(biff, embedded labels, table is [Vehicle Type$]);
+
+Left Join
+LOAD code AS Sex_of_Driver, 
+     label AS [Sex of Driver]
+FROM
+[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Road-Accident-Safety-Data-Guide.xls]
+(biff, embedded labels, table is [Sex of Driver$]);
+
+Left Join
+LOAD code as Journey_Purpose_of_Driver,  
+     label as [Journey Purpose]
+FROM
+[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Road-Accident-Safety-Data-Guide.xls]
+(biff, embedded labels, table is [Journey Purpose$]);
+
+
+
+
+
+
+
+///$tab Casualties
+//Casualties:
+//LOAD Accident_Index AND '_' AND Vehicle_Reference AS %Key_AccidentVehicle, 
+//     //Vehicle_Reference, 
+//     Casualty_Reference, 
+//     Casualty_Class, 
+//     Sex_of_Casualty, 
+//     Age_of_Casualty, 
+//     //Age_Band_of_Casualty, 
+//     Casualty_Severity, 
+////     Pedestrian_Location, 
+////     Pedestrian_Movement, 
+////     Car_Passenger, 
+////     Bus_or_Coach_Passenger, 
+////     Pedestrian_Road_Maintenance_Worker, 
+//     Casualty_Type 
+////     Casualty_Home_Area_Type
+//FROM
+//[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Casualties0514.csv]
+//(txt, utf8, embedded labels, delimiter is ',', msq);
+//
+//Left Join
+//LOAD code as Casualty_Class, 
+//     label as [Casualty Class]
+//FROM
+//[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Road-Accident-Safety-Data-Guide.xls]
+//(biff, embedded labels, table is [Casualty Class$]);
+//
+//Left Join
+//LOAD code as Sex_of_Casualty,
+//     label as [Sex of Casualty]
+//FROM
+//[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Road-Accident-Safety-Data-Guide.xls]
+//(biff, embedded labels, table is [Sex of Casualty$]);
+//
+//left Join
+//LOAD code as Casualty_Severity, 
+//     label as [Casualty Severity]
+//FROM
+//[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Road-Accident-Safety-Data-Guide.xls]
+//(biff, embedded labels, table is [Casualty Severity$]);
+//
+//Left Join
+//LOAD code as Casualty_Type, 
+//     label as [Casualty Type]
+//FROM
+//[C:\Users\clmap\Documents\Qlik\Training apps\road-accidents-safety-data\data\Stats19_Data_2005-2014\Road-Accident-Safety-Data-Guide.xls]
+//(biff, embedded labels, table is [Casualty Type$]);
+//
+//
+//
+//
+//
+//
+//
+//
